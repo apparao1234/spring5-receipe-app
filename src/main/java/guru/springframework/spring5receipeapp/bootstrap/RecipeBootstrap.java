@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import guru.springframework.spring5receipeapp.domain.Category;
 import guru.springframework.spring5receipeapp.domain.Difficulty;
@@ -19,10 +20,12 @@ import guru.springframework.spring5receipeapp.domain.UnitOfMeasure;
 import guru.springframework.spring5receipeapp.repositories.CategoryRepository;
 import guru.springframework.spring5receipeapp.repositories.RecipeRepository;
 import guru.springframework.spring5receipeapp.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by jt on 6/13/17.
  */
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -37,7 +40,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+    	log.debug("loading bootstrap ");
         recipeRepository.saveAll(getRecipes());
     }
 
